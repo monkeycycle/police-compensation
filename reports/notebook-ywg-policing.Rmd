@@ -1,0 +1,261 @@
+---
+title: "ywg-policing"
+author: "Michael Pereira"
+output:
+  html_document:
+    code_folding: hide
+    css: styles.css
+    df_print: kable
+    self_contained: yes
+    theme: cosmo
+    toc: yes
+    toc_depth: 3
+    toc_float: no
+---
+
+```{r config, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+
+if (!require('devtools')) install.packages('devtools'); library('devtools')
+if (!require('here')) install.packages('here'); library('here')
+
+source(here::here('config.R'))
+if (should_process_data) source(here::here(dir_src, 'process.R'))
+source(here::here(dir_src, 'analyze.R'))
+source(here::here(dir_src, 'visualize.R'))
+
+options(warn = 1, width = 200)
+
+```
+
+## Key takeaways
+
+* 57.39 per cent increase in tax-supported police budget over the last 10 years. 36.34 per cent increase in the past five years, well above inflation.
+* 11.67 per cent increase in the City of Winnipeg's population over the last 10 years. 6.34 per cent increase in the last five years.
+* Per capita costs have gone up 40.914 per cent in the last 10 years and  8.56 per cent in the last five years.
+
+
+* There are 41 fewer sworn officers in 2018 as compared to 2010. The number of sworn officers increased (51) from 2010 to 2015 and immediately began decreasing. There are 92 fewer sworn officers than in 2015, it's not clear if the retirement rate exceeds new hires.
+* The diversity stats are a wash. Men are consistently in the low-to-mid 80 per cent. The proportion of indigenous and visible minority officers has also remained consistent in the 10 years.
+
+
+* The number of police-initiated events is erratic while citizen-generated dispatch events have grown steadily.
+* The number of violent crimes increased 21 per cent since 2015 after decreasing in the previous four years. The clearance rate for violent crimes has been in steady decline since 2015, ending at 58.2 per cent in 2018.
+* Incidents of property crimes increased dramatically from a low of approximately 21,000 in 2015 to 51,000 in 2019. This is an increase of 143 per cent in five years. The clearance rate for property crimes has remained below 17 per cent throughout the past ten years.
+* Controlled Drugs and Substances Act incidents have been declining since 2011 with a small 14 per cent increase in 2017. Since 2015, CDSA incidents have decreased 30 per cent. Clearance rates for CDSA incidents are consistently above 90 per cent. Simple possession is likely not included in the CDSA counts.
+* Property crime occurs roughly five times as frequently as violent crime with a clearance rate of approximately a fifth of the violent crime clearance rate. Clearance rates for both are down in the most recent five years, seven per cent for property crime and 15 percent for violent crime.
+
+
+
+
+## Staffing
+
+### Authorized and sworn officers
+
+
+
+Authorized officer counts for the most recent year are down 104 compared to the max sworn officer count. The difference between the min and max sworn officer counts for the years 2010-2019 is 104.
+
+Actual officer counts for the most recent year are -148 compared to the max sworn officer count. The difference between the min and max sworn officer counts for the years 2010-2019 is 148.
+
+The actual officer count was higher than the authorized count for seven of the ten years. The overage ranged from 17 to 47 officers.
+
+
+```{r authorized_officers, echo=FALSE, message=FALSE, warning=FALSE, fig.asp = .56}
+plot(wfp_wps_authorized_officers)
+plot(wps_wps_authorized_officers_pct_chg)
+
+plot(wfp_wps_actual_officers)
+plot(wps_wps_actual_officers_pct_chg)
+
+plot(wfp_wps_authorized_actual_officers)
+
+```
+
+
+### Diversity of sworn officers
+
+There has been little to no change in diversity within the ranks of WPS sworn officers. Men are consistently in the low-to-mid 80 per cent. The proportion of indigenous and visible minority officers has also remained consistent in the 10 years.
+
+WPS began reporting a 'not declared' option in 2015. Priot to that, Caucasian officers accounted for low-to-mid 80 per cent of the sworn compliment. A lack of change in the percentage of Indigenous and visible minority officers suggests the option was selected primarily by white officers.
+
+
+```{r authorized_officers_diversity_vismin, echo=FALSE, message=FALSE, warning=FALSE, fig.asp = .56}
+plot(wfp_wps_officers_diversity_vismin)
+
+
+```
+
+### Gender diversity
+```{r authorized_officers_diversity_gender, echo=FALSE, message=FALSE, warning=FALSE, fig.asp = .56}
+
+plot(wfp_wps_officers_diversity_gender)
+
+```
+
+## Population
+
+```{r population, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.asp = .56}
+
+plot(wfp_wps_population)
+plot(wfp_wps_population_pct_change)
+
+```
+
+----
+
+## Costs
+
+### Tax-supported expenses
+```{r tax_supported_expenses, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.asp = .56}
+
+plot(wfp_wps_budget_annual)
+plot(wfp_wps_budget_pct_change)
+
+```
+
+### Per capita costs
+```{r per_capita_costs, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.asp = .56}
+
+plot(wfp_wps_per_capita_annual)
+plot(wfp_wps_per_capita_pct_change)
+
+```
+
+### Residents per police officer
+```{r residents_per_police_officer, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.asp = .56}
+
+plot(wfp_wps_residents_per_police_officer)
+plot(wfp_wps_residents_per_police_officer_pct_change)
+
+```
+
+----
+
+## Crime
+
+### Calls and dispatched events
+
+```{r calls_events, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.asp = .56}
+
+plot(wfp_wps_calls_comms_centre)
+plot(wfp_wps_police_citizen_dispatched)
+plot(wfp_wps_police_citizen_pct_change)
+```
+
+### Violent crime
+
+The number of violent crimes increased 21 per cent since 2015 after decreasing in the previous four years.
+
+The clearance rate for violent crimes has been in steady decline since 2015, ending at 58.2 per cent in 2018.
+
+```{r violent_crime, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.asp = .56}
+
+plot(wfp_wps_violent_crimes)
+plot(wfp_wps_violent_crimes_clearance)
+
+```
+
+### Property crime
+
+Incidents of property crimes increased dramatically from a low of approximately 21,000 in 2015 to 51,000 in 2019. This is an increase of 143 per cent in five years.
+
+The clearance rate for property crimes has remained below 17 per cent throughout the past ten years.
+
+```{r property_crime, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.asp = .56}
+
+plot(wfp_wps_property_crimes)
+plot(wfp_wps_property_crimes_clearance)
+
+```
+
+### CDSA crimes
+
+Controlled Drugs and Substances Act incidents have been declining since 2011 with a small 14 per cent increase in 2017. Since 2015, CDSA incidents have decreased 30 per cent.
+
+Clearance rates for CDSA incidents are consistently above 90 per cent.
+
+
+```{r cdsa_crime, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.asp = .56}
+
+plot(wfp_wps_cdsa_crimes)
+plot(wfp_wps_cdsa_crimes_clearance)
+
+```
+
+
+----
+
+## Tables
+```{r tables, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.asp = .56}
+
+datatable(wps_authorized_actual_officers)
+
+datatable(wps_officers_diversity %>% select(
+  year_date,
+  sworn_total_actual,
+  sworn_caucasian,
+  sworn_indigenous,
+  sworn_visible_minorities,
+  sworn_not_declared,
+  sworn_caucasian_pct,
+  sworn_indigenous_pct,
+  sworn_visible_minorities_pct,
+  sworn_not_declared_pct,
+),
+rownames = FALSE,
+caption="Diversity of sworn officers",
+colnames=c(
+  "year date",
+  "total actual",
+  "caucasian",
+  "indigenous",
+  "visible minorities",
+  "not declared",
+  "caucasian pct",
+  "indigenous pct",
+  "visible minorities pct",
+  "not declared pct"
+)
+)
+
+
+datatable(wps_officers_diversity %>% select(
+  year_date,
+  sworn_total_actual,
+  sworn_male,
+  sworn_female,
+  sworn_male_pct,
+  sworn_female_pct,
+),
+rownames = FALSE,
+caption="Gender diversity of sworn officers",
+colnames=c(
+  "year date",
+  "total actual",
+  "male",
+  "female",
+  "male pct",
+  "female pct"
+)
+)
+
+
+```
+
+## Notes
+
+The data has been input and compiled in a Google Sheet.
+
+* https://docs.google.com/spreadsheets/d/12O_DnTdjJfvkWaCxwzjLqyj64Ahroax-JyslkBBodNk/edit#gid=0
+
+
+### Inconsistencies in source data
+* Some officer positions are externally funded, in whole or part. Counts are inconsistently noted in the annual reports. This analysis ignores external funding.
+* 2013: WPS started using Indigenous instead of Aboriginal. Working data has been normalized to use Indigenous.
+* 2016: WPS included male/female breakdown within diversity stats but stopped in 2018. Working data does not include the gender breakdowns.
+* 2016: WPS began including cadets in civilian counts alongside a separate count of cadets. Working data calculated the difference to determine civilian staff count.
+* 2017: WPS changed reported staffing values from counts to percentages. Working data calcuates the count from the percentage. WPS stopped including separate cadet counts which are required to determine civilian staffing counts.
+* 2018: WPS continued reporting percentages instead of staffing counts.
+* 2018: WPS dropped 'not declared'.
+
+**Civilian and cadet counts are excluded from this analysis unless the two are combined for all years.**

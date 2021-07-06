@@ -12,7 +12,11 @@ date: "`r format(Sys.Date(), "%B %d, %Y")`"
 output:
   html_document:
     toc: true
-    toc_float: true
+    number_sections: true    
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: false    
     highlight: textmate
     theme: cosmo
     df_print: kable
@@ -28,10 +32,20 @@ run_visualize()
 
 ```
 
-```{r summarize_winnipeg_police], echo=FALSE, message=FALSE, warning=FALSE, fold_source=TRUE}
+
+* WPS is encoded as both `Police Service` and `Police Services`. 
+  * TODO: Normalize department names
+* Some entries are salaries below $70,000
+* TODO: Confirm if OT is included across all years
+
+
+```{r summarize_winnipeg_police, echo=FALSE, message=FALSE, warning=FALSE, fold_source=TRUE}
 
 winnipeg_all_salary_disclosure_2016_2020__dept_cnt <- winnipeg_all_salary_disclosure_2016_2020 %>%   group_by(year, department) %>% 
-  count(department)
+  count(department) %>% 
+  rename(
+    count = n
+  )
 
 winnipeg_all_salary_disclosure_2016_2020__dept_sum <- winnipeg_all_salary_disclosure_2016_2020 %>%   
   group_by(year, department) %>% 
@@ -39,7 +53,6 @@ winnipeg_all_salary_disclosure_2016_2020__dept_sum <- winnipeg_all_salary_disclo
     sum_compensation = sum(compensation, na.rm = TRUE), 
     mean_compensation = mean(compensation, na.rm = TRUE),
     median_compensation = median(compensation, na.rm = TRUE),
-    min_compensation = min(compensation, na.rm = TRUE),
     max_compensation = max(compensation, na.rm = TRUE)
   ) 
 
@@ -52,19 +65,17 @@ winnipeg_all_salary_disclosure_2016_2020_grouped <- left_join(
 winnipeg_all_salary_disclosure_2016_2020_grouped_ranked <- winnipeg_all_salary_disclosure_2016_2020_grouped %>% 
   group_by(year) %>% 
   mutate(
-    rank_n = order(order(n, decreasing=TRUE)),
+    rank_count = order(order(count, decreasing=TRUE)),
     rank_sum_compensation = order(order(sum_compensation, decreasing=TRUE)),
     rank_mean_compensation = order(order(mean_compensation, decreasing=TRUE)),
     rank_median_compensation = order(order(median_compensation, decreasing=TRUE)),
-    rank_min_compensation = order(order(min_compensation, decreasing=TRUE)),
     rank_max_compensation = order(order(max_compensation, decreasing=TRUE))
   ) %>% 
   select(
-    -n,
+    -count,
     -sum_compensation,
     -mean_compensation,
     -median_compensation,
-    -min_compensation,
     -max_compensation
   )
 
@@ -75,43 +86,51 @@ winnipeg_all_salary_disclosure_2016_2020_grouped_ranked <- winnipeg_all_salary_d
 
 ### Data tables
 
-####  winnipeg_all_salary_disclosure_2016_2020_grouped
-```{r dt_winnipeg_all_salary_disclosure_2016_2020_grouped, echo=TRUE, message=TRUE, warning=TRUE }
-
-datatable(winnipeg_all_salary_disclosure_2016_2020_grouped,
-          caption = 'Table: winnipeg_all_salary_disclosure_2016_2020_grouped',
-          class="cell-border stripe", rownames=FALSE,
-          options = list(
-            pageLength = 50,
-            order = list(list(1, 'desc'))
-          )
-        )
-```
-
-
-
 ####  winnipeg_all_salary_disclosure_2016_2020_grouped_ranked
 ```{r dt_winnipeg_all_salary_disclosure_2016_2020_grouped_ranked, echo=TRUE, message=TRUE, warning=TRUE }
 
 datatable(winnipeg_all_salary_disclosure_2016_2020_grouped_ranked,
           caption = 'Table: winnipeg_all_salary_disclosure_2016_2020_grouped_ranked',
-          class="cell-border stripe", rownames=FALSE,
+          class="cell-border stripe", 
+          rownames=FALSE,
+          filter = 'top',
           options = list(
-            pageLength = 50,
+            pageLength = 10,
             order = list(list(1, 'desc'))
           )
         )
 ```
 
+####  winnipeg_all_salary_disclosure_2016_2020_grouped
+```{r dt_winnipeg_all_salary_disclosure_2016_2020_grouped, echo=TRUE, message=TRUE, warning=TRUE }
+
+datatable(winnipeg_all_salary_disclosure_2016_2020_grouped,
+          caption = 'Table: winnipeg_all_salary_disclosure_2016_2020_grouped',
+          class="cell-border stripe", 
+          rownames=FALSE,
+          filter = 'top',
+          options = list(
+            pageLength = 10,
+            order = list(list(1, 'desc'))
+          )
+        )
+```
+
+----
 
 #### winnipeg_police_salary_disclosure_2016_2020
+
+Winnipeg Police Service staff are named but officers (Constables, etc.) are not.
+
 ```{r dt_winnipeg_police_salary_disclosure_2016_2020, echo=TRUE, message=TRUE, warning=TRUE }
 
 datatable(winnipeg_police_salary_disclosure_2016_2020,
           caption = 'Table: winnipeg_police_salary_disclosure_2016_2020',
-          class="cell-border stripe", rownames=FALSE,
+          class="cell-border stripe", 
+          rownames=FALSE,
+          filter = 'top',
           options = list(
-            pageLength = 50,
+            pageLength = 25,
             order = list(list(1, 'desc'))
           )
         )
