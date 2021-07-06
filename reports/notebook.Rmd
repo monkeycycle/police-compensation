@@ -1,21 +1,119 @@
+```{r config, echo=FALSE, message=FALSE, warning=FALSE, results="hide"}
+# Run config first to use dynamic variables in the YAML
+if (!require("upstartr")) install.packages("upstartr")
+library("upstartr")
+run_config()
+```
+
 ---
-title: "`r getOption('startr.title')`"
-date: "`r format(Sys.Date(), '%B %d, %Y')`"
-author: "`r getOption('startr.author')`"
+title: "`r getOption("startr.title")`"
+author: "`r getOption("startr.author")`"
+date: "`r format(Sys.Date(), "%B %d, %Y")`"
 output:
-  html_notebook:
-    code_folding: hide
-    df_print: kable
-    self_contained: yes
+  html_document:
+    toc: true
+    toc_float: true
+    highlight: textmate
     theme: cosmo
-    toc: yes
-    toc_depth: 3
+    df_print: kable
+    self_contained: true
+    code_folding: hide
 ---
 
-## First heading
+```{r get_read_data, echo=FALSE, message=FALSE, warning=FALSE, fold_source=TRUE}
 
-Text goes here.
+run_process()
+run_analyze()
+run_visualize()
 
-```{r}
-# R code goes here
+```
+
+```{r summarize_winnipeg_police], echo=FALSE, message=FALSE, warning=FALSE, fold_source=TRUE}
+
+winnipeg_all_salary_disclosure_2016_2020__dept_cnt <- winnipeg_all_salary_disclosure_2016_2020 %>%   group_by(year, department) %>% 
+  count(department)
+
+winnipeg_all_salary_disclosure_2016_2020__dept_sum <- winnipeg_all_salary_disclosure_2016_2020 %>%   
+  group_by(year, department) %>% 
+  summarise(
+    sum_compensation = sum(compensation, na.rm = TRUE), 
+    mean_compensation = mean(compensation, na.rm = TRUE),
+    median_compensation = median(compensation, na.rm = TRUE),
+    min_compensation = min(compensation, na.rm = TRUE),
+    max_compensation = max(compensation, na.rm = TRUE)
+  ) 
+
+winnipeg_all_salary_disclosure_2016_2020_grouped <- left_join(
+  winnipeg_all_salary_disclosure_2016_2020__dept_cnt,
+  winnipeg_all_salary_disclosure_2016_2020__dept_sum,
+  ) %>% 
+  ungroup()
+
+winnipeg_all_salary_disclosure_2016_2020_grouped_ranked <- winnipeg_all_salary_disclosure_2016_2020_grouped %>% 
+  group_by(year) %>% 
+  mutate(
+    rank_n = order(order(n, decreasing=TRUE)),
+    rank_sum_compensation = order(order(sum_compensation, decreasing=TRUE)),
+    rank_mean_compensation = order(order(mean_compensation, decreasing=TRUE)),
+    rank_median_compensation = order(order(median_compensation, decreasing=TRUE)),
+    rank_min_compensation = order(order(min_compensation, decreasing=TRUE)),
+    rank_max_compensation = order(order(max_compensation, decreasing=TRUE))
+  ) %>% 
+  select(
+    -n,
+    -sum_compensation,
+    -mean_compensation,
+    -median_compensation,
+    -min_compensation,
+    -max_compensation
+  )
+
+```
+
+
+
+
+### Data tables
+
+####  winnipeg_all_salary_disclosure_2016_2020_grouped
+```{r dt_winnipeg_all_salary_disclosure_2016_2020_grouped, echo=TRUE, message=TRUE, warning=TRUE }
+
+datatable(winnipeg_all_salary_disclosure_2016_2020_grouped,
+          caption = 'Table: winnipeg_all_salary_disclosure_2016_2020_grouped',
+          class="cell-border stripe", rownames=FALSE,
+          options = list(
+            pageLength = 50,
+            order = list(list(1, 'desc'))
+          )
+        )
+```
+
+
+
+####  winnipeg_all_salary_disclosure_2016_2020_grouped_ranked
+```{r dt_winnipeg_all_salary_disclosure_2016_2020_grouped_ranked, echo=TRUE, message=TRUE, warning=TRUE }
+
+datatable(winnipeg_all_salary_disclosure_2016_2020_grouped_ranked,
+          caption = 'Table: winnipeg_all_salary_disclosure_2016_2020_grouped_ranked',
+          class="cell-border stripe", rownames=FALSE,
+          options = list(
+            pageLength = 50,
+            order = list(list(1, 'desc'))
+          )
+        )
+```
+
+
+#### winnipeg_police_salary_disclosure_2016_2020
+```{r dt_winnipeg_police_salary_disclosure_2016_2020, echo=TRUE, message=TRUE, warning=TRUE }
+
+datatable(winnipeg_police_salary_disclosure_2016_2020,
+          caption = 'Table: winnipeg_police_salary_disclosure_2016_2020',
+          class="cell-border stripe", rownames=FALSE,
+          options = list(
+            pageLength = 50,
+            order = list(list(1, 'desc'))
+          )
+        )
+
 ```

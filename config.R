@@ -4,18 +4,27 @@
 # =================================================================
 
 initialize_startr(
-  title = 'startr',
-  author = 'Firstname Lastname <firstlast@example.com>',
-  timezone = 'America/Toronto',
+  title = 'Police compensation',
+  author = 'Michael Pereira <michael.pereira@freepress.mb.ca>',
+  timezone = 'America/Winnipeg',
   should_render_notebook = FALSE,
   should_process_data = TRUE,
   should_timestamp_output_files = FALSE,
+  should_beep = FALSE,
   packages = c(
-    'tidyverse', 'glue', 'lubridate', 'readxl', 'feather', 'scales', 'knitr'
-    # 'rvest', 'janitor', 'zoo',
-    # 'sf', 'tidymodels',
-    # 'gganimate', 'tgamtheme',
-    # 'cansim', 'cancensus'
+    'tidyverse', 'glue', 'lubridate',
+    'readxl', 'feather', 'scales', 'knitr',
+    'readr',
+    'janitor',
+    'zoo',
+    'DT'
+    # 'rvest',
+    # 'sf',
+    # 'tidymodels',
+    # 'gganimate',
+    # 'tgamtheme',
+    # 'cansim',
+    # 'cancensus'
   )
 )
 
