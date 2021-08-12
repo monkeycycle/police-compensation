@@ -1,0 +1,125 @@
+```{r config, echo=FALSE, message=FALSE, warning=FALSE, results="hide"}
+# Run config first to use dynamic variables in the YAML
+if (!require("upstartr")) install.packages("upstartr")
+library("upstartr")
+run_config()
+```
+
+---
+title: "`r getOption("startr.title")`"
+author: "`r getOption("startr.author")`"
+date: "`r format(Sys.Date(), "%B %d, %Y")`"
+output:
+  html_document:
+    toc: true
+    number_sections: true    
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: false    
+    highlight: textmate
+    theme: cosmo
+    df_print: kable
+    self_contained: true
+    code_folding: hide
+---
+
+```{r elt, echo=FALSE, message=FALSE, warning=FALSE, fold_source=TRUE}
+
+# source(dir_src("theme.R"))
+# source(dir_src("palette.R"))
+run_process()
+run_analyze()
+run_visualize()
+```
+
+
+
+## Take-aways
+
+
+### City of Winnipeg salary disclosure docs, 2016-2020
+**Across City of Winnipeg departments, the Winnipeg Police Service ranks in first place for:**
+
+-   has the most staff on Winnipeg's salary disclosure list for 2016-2020 (1,381 - 1,853 people)
+-   has the highest sum of total compensation for 2016-2020, based on disclosure list alone (\$168,865,173 - \$192,917,553)
+-   recorded the highest compensation in the city in the years 2016, 2019 and 2020 ($368,883, $272,876, $291,834 respectively). 
+    -   The Chief Administrative Office reported the highest compensation for 2017 and 2018 ($261,868 and $266,483).
+    -   The officer who earned \$368,883 in 2016 appears to have left the force that year. Could potentially semi-trace their salary pre-2016. TBD
+
+
+
+------------------------------------------------------------------------
+
+### Data tables
+
+#### winnipeg_all_salary_disclosure_2016_2020_grouped_ranked
+
+```{r dt_winnipeg_all_salary_disclosure_2016_2020_grouped_ranked, echo=TRUE, message=TRUE, warning=TRUE }
+
+datatable(winnipeg_all_salary_disclosure_2016_2020_grouped_ranked,
+  caption = "Table: winnipeg_all_salary_disclosure_2016_2020_grouped_ranked",
+  class = "cell-border stripe",
+  rownames = FALSE,
+  filter = "top",
+  options = list(
+    pageLength = 10,
+    order = list(list(3, "asc"), list(1, "asc")),
+    language = list(search = 'Filter:')
+  )
+)
+```
+
+#### winnipeg_all_salary_disclosure_2016_2020_grouped
+
+```{r dt_winnipeg_all_salary_disclosure_2016_2020_grouped, echo=TRUE, message=TRUE, warning=TRUE }
+
+datatable(winnipeg_all_salary_disclosure_2016_2020_grouped,
+  caption = "Table: winnipeg_all_salary_disclosure_2016_2020_grouped",
+  class = "cell-border stripe",
+  rownames = FALSE,
+  filter = "top",
+  options = list(
+    pageLength = 10,
+    order = list(list(1, "desc")),
+    language = list(search = 'Filter:'),
+    search = list(regex = TRUE, caseInsensitive = FALSE, search = 'Police')
+  )
+)
+```
+
+------------------------------------------------------------------------
+
+#### winnipeg_police_salary_disclosure_2016_2020
+
+Winnipeg Police Service staff are named but officers (Constables, etc.) are not.
+
+```{r dt_winnipeg_police_salary_disclosure_2016_2020, echo=TRUE, message=TRUE, warning=TRUE }
+
+datatable(winnipeg_police_salary_disclosure_2016_2020,
+  caption = "Table: winnipeg_police_salary_disclosure_2016_2020",
+  class = "cell-border stripe",
+  rownames = FALSE,
+  filter = "top",
+  options = list(
+    pageLength = 25,
+    order = list(list(5, "asc"))
+  )
+)
+```
+
+
+----------
+
+## NOTES and TODO
+
+-   WPS is encoded as both `Police Service` and `Police Services`.
+
+    -   ~~TODO: Normalize department names~~
+
+-   Some entries are salaries below \$70,000
+
+    -   TODO: Set and filter for minimum salary
+
+-   TODO: Confirm if OT is included (across all years?)
+

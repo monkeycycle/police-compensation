@@ -24,115 +24,33 @@ output:
     code_folding: hide
 ---
 
-```{r get_read_data, echo=FALSE, message=FALSE, warning=FALSE, fold_source=TRUE}
+```{r elt, echo=FALSE, message=FALSE, warning=FALSE, fold_source=TRUE}
 
+source(dir_src("theme.R"))
+source(dir_src("palette.R"))
 run_process()
 run_analyze()
 run_visualize()
-
 ```
 
 
-* WPS is encoded as both `Police Service` and `Police Services`. 
-  * TODO: Normalize department names
-* Some entries are salaries below $70,000
-* TODO: Confirm if OT is included across all years
+```{r dt_wps_tax_supported_expenses, echo=TRUE, message=TRUE, warning=TRUE }
+
+p_wps_tax_supported_expenses <- ggplot(wps_tax_supported_expenses) + 
 
 
-```{r summarize_winnipeg_police, echo=FALSE, message=FALSE, warning=FALSE, fold_source=TRUE}
 
-winnipeg_all_salary_disclosure_2016_2020__dept_cnt <- winnipeg_all_salary_disclosure_2016_2020 %>%   group_by(year, department) %>% 
-  count(department) %>% 
-  rename(
-    count = n
+datatable(wps_tax_supported_expenses,
+  caption = "Table: wps_tax_supported_expenses",
+  class = "cell-border stripe",
+  rownames = FALSE,
+  filter = "top",
+  options = list(
+    pageLength = 10,
+    order = list(list(1, "asc"))
+    # language = list(search = 'Filter:'),
+    # search = list(regex = TRUE, caseInsensitive = FALSE, search = 'Police')
   )
-
-winnipeg_all_salary_disclosure_2016_2020__dept_sum <- winnipeg_all_salary_disclosure_2016_2020 %>%   
-  group_by(year, department) %>% 
-  summarise(
-    sum_compensation = sum(compensation, na.rm = TRUE), 
-    mean_compensation = mean(compensation, na.rm = TRUE),
-    median_compensation = median(compensation, na.rm = TRUE),
-    max_compensation = max(compensation, na.rm = TRUE)
-  ) 
-
-winnipeg_all_salary_disclosure_2016_2020_grouped <- left_join(
-  winnipeg_all_salary_disclosure_2016_2020__dept_cnt,
-  winnipeg_all_salary_disclosure_2016_2020__dept_sum,
-  ) %>% 
-  ungroup()
-
-winnipeg_all_salary_disclosure_2016_2020_grouped_ranked <- winnipeg_all_salary_disclosure_2016_2020_grouped %>% 
-  group_by(year) %>% 
-  mutate(
-    rank_count = order(order(count, decreasing=TRUE)),
-    rank_sum_compensation = order(order(sum_compensation, decreasing=TRUE)),
-    rank_mean_compensation = order(order(mean_compensation, decreasing=TRUE)),
-    rank_median_compensation = order(order(median_compensation, decreasing=TRUE)),
-    rank_max_compensation = order(order(max_compensation, decreasing=TRUE))
-  ) %>% 
-  select(
-    -count,
-    -sum_compensation,
-    -mean_compensation,
-    -median_compensation,
-    -max_compensation
-  )
-
+)
 ```
 
-
-
-
-### Data tables
-
-####  winnipeg_all_salary_disclosure_2016_2020_grouped_ranked
-```{r dt_winnipeg_all_salary_disclosure_2016_2020_grouped_ranked, echo=TRUE, message=TRUE, warning=TRUE }
-
-datatable(winnipeg_all_salary_disclosure_2016_2020_grouped_ranked,
-          caption = 'Table: winnipeg_all_salary_disclosure_2016_2020_grouped_ranked',
-          class="cell-border stripe", 
-          rownames=FALSE,
-          filter = 'top',
-          options = list(
-            pageLength = 10,
-            order = list(list(1, 'desc'))
-          )
-        )
-```
-
-####  winnipeg_all_salary_disclosure_2016_2020_grouped
-```{r dt_winnipeg_all_salary_disclosure_2016_2020_grouped, echo=TRUE, message=TRUE, warning=TRUE }
-
-datatable(winnipeg_all_salary_disclosure_2016_2020_grouped,
-          caption = 'Table: winnipeg_all_salary_disclosure_2016_2020_grouped',
-          class="cell-border stripe", 
-          rownames=FALSE,
-          filter = 'top',
-          options = list(
-            pageLength = 10,
-            order = list(list(1, 'desc'))
-          )
-        )
-```
-
-----
-
-#### winnipeg_police_salary_disclosure_2016_2020
-
-Winnipeg Police Service staff are named but officers (Constables, etc.) are not.
-
-```{r dt_winnipeg_police_salary_disclosure_2016_2020, echo=TRUE, message=TRUE, warning=TRUE }
-
-datatable(winnipeg_police_salary_disclosure_2016_2020,
-          caption = 'Table: winnipeg_police_salary_disclosure_2016_2020',
-          class="cell-border stripe", 
-          rownames=FALSE,
-          filter = 'top',
-          options = list(
-            pageLength = 25,
-            order = list(list(1, 'desc'))
-          )
-        )
-
-```

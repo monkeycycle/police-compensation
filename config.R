@@ -12,12 +12,18 @@ initialize_startr(
   should_timestamp_output_files = FALSE,
   should_beep = FALSE,
   packages = c(
-    'tidyverse', 'glue', 'lubridate',
-    'readxl', 'feather', 'scales', 'knitr',
-    'readr',
-    'janitor',
-    'zoo',
-    'DT'
+    "tidyverse", "glue", "magrittr", "lubridate", "hms",
+    "readxl", "feather", "RcppRoll",
+    "scales", "janitor", "httr", "Cairo",
+    "ggrepel", "prettydoc",
+    "aws.s3", "dotenv", "rlang",
+    "googledrive", "googlesheets4", "cowplot",
+    "zip", "gmailr", "knitr", "DT", "zoo", "ggtext",
+    "ggpubr", "ggtext", "showtext", "kableExtra",
+    "gmailr", "patchwork",
+    "pracma", "ISOweek",
+    "slackr", "ggbeeswarm"
+
     # 'rvest',
     # 'sf',
     # 'tidymodels',

@@ -1,31 +1,37 @@
+```{r config, echo=FALSE, message=FALSE, warning=FALSE, results="hide"}
+# Run config first to use dynamic variables in the YAML
+if (!require("upstartr")) install.packages("upstartr")
+library("upstartr")
+run_config()
+```
+
 ---
-title: "ywg-policing"
-author: "Michael Pereira"
+title: "`r getOption("startr.title")`"
+author: "`r getOption("startr.author")`"
+date: "`r format(Sys.Date(), "%B %d, %Y")`"
 output:
   html_document:
-    code_folding: hide
-    css: styles.css
-    df_print: kable
-    self_contained: yes
-    theme: cosmo
-    toc: yes
+    toc: true
+    number_sections: true    
     toc_depth: 3
-    toc_float: no
+    toc_float:
+      collapsed: false
+      smooth_scroll: false    
+    highlight: textmate
+    theme: cosmo
+    df_print: kable
+    self_contained: true
+    code_folding: hide
 ---
 
-```{r config, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+```{r elt, echo=FALSE, message=FALSE, warning=FALSE, fold_source=TRUE}
 
-if (!require('devtools')) install.packages('devtools'); library('devtools')
-if (!require('here')) install.packages('here'); library('here')
-
-source(here::here('config.R'))
-if (should_process_data) source(here::here(dir_src, 'process.R'))
-source(here::here(dir_src, 'analyze.R'))
-source(here::here(dir_src, 'visualize.R'))
-
-options(warn = 1, width = 200)
+run_process()
+run_analyze()
+run_visualize()
 
 ```
+
 
 ## Key takeaways
 
@@ -68,7 +74,6 @@ plot(wfp_wps_actual_officers)
 plot(wps_wps_actual_officers_pct_chg)
 
 plot(wfp_wps_authorized_actual_officers)
-
 ```
 
 
@@ -81,15 +86,12 @@ WPS began reporting a 'not declared' option in 2015. Priot to that, Caucasian of
 
 ```{r authorized_officers_diversity_vismin, echo=FALSE, message=FALSE, warning=FALSE, fig.asp = .56}
 plot(wfp_wps_officers_diversity_vismin)
-
-
 ```
 
 ### Gender diversity
 ```{r authorized_officers_diversity_gender, echo=FALSE, message=FALSE, warning=FALSE, fig.asp = .56}
 
 plot(wfp_wps_officers_diversity_gender)
-
 ```
 
 ## Population
@@ -98,7 +100,6 @@ plot(wfp_wps_officers_diversity_gender)
 
 plot(wfp_wps_population)
 plot(wfp_wps_population_pct_change)
-
 ```
 
 ----
@@ -110,7 +111,6 @@ plot(wfp_wps_population_pct_change)
 
 plot(wfp_wps_budget_annual)
 plot(wfp_wps_budget_pct_change)
-
 ```
 
 ### Per capita costs
@@ -118,7 +118,6 @@ plot(wfp_wps_budget_pct_change)
 
 plot(wfp_wps_per_capita_annual)
 plot(wfp_wps_per_capita_pct_change)
-
 ```
 
 ### Residents per police officer
@@ -126,7 +125,6 @@ plot(wfp_wps_per_capita_pct_change)
 
 plot(wfp_wps_residents_per_police_officer)
 plot(wfp_wps_residents_per_police_officer_pct_change)
-
 ```
 
 ----
@@ -152,7 +150,6 @@ The clearance rate for violent crimes has been in steady decline since 2015, end
 
 plot(wfp_wps_violent_crimes)
 plot(wfp_wps_violent_crimes_clearance)
-
 ```
 
 ### Property crime
@@ -165,7 +162,6 @@ The clearance rate for property crimes has remained below 17 per cent throughout
 
 plot(wfp_wps_property_crimes)
 plot(wfp_wps_property_crimes_clearance)
-
 ```
 
 ### CDSA crimes
@@ -179,7 +175,6 @@ Clearance rates for CDSA incidents are consistently above 90 per cent.
 
 plot(wfp_wps_cdsa_crimes)
 plot(wfp_wps_cdsa_crimes_clearance)
-
 ```
 
 
@@ -203,8 +198,8 @@ datatable(wps_officers_diversity %>% select(
   sworn_not_declared_pct,
 ),
 rownames = FALSE,
-caption="Diversity of sworn officers",
-colnames=c(
+caption = "Diversity of sworn officers",
+colnames = c(
   "year date",
   "total actual",
   "caucasian",
@@ -228,8 +223,8 @@ datatable(wps_officers_diversity %>% select(
   sworn_female_pct,
 ),
 rownames = FALSE,
-caption="Gender diversity of sworn officers",
-colnames=c(
+caption = "Gender diversity of sworn officers",
+colnames = c(
   "year date",
   "total actual",
   "male",
@@ -238,8 +233,6 @@ colnames=c(
   "female pct"
 )
 )
-
-
 ```
 
 ## Notes

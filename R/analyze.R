@@ -1,15 +1,7 @@
-# =======================================================================
-# This file handles the primary analysis using the tidied  data as input.
-# Should never read from `dir_data_raw()`, only `dir_data_processed()`.
-# =======================================================================
 
-winnipeg_all_salary_disclosure_2016_2020 <- read_feather(dir_data_processed('winnipeg_all_salary_disclosure_2016_2020.feather'))
-winnipeg_police_salary_disclosure_2016_2020 <- read_feather(dir_data_processed('winnipeg_police_salary_disclosure_2016_2020.feather'))
+inflation_rate <- read_feather(dir_data_processed('inflation_rate.feather'))
+winnipeg_wps_annual_reports <- read_feather(dir_data_processed('wps_annual_reports.feather'))
+winnipeg_wfps_annual_reports <- read_feather(dir_data_processed('wfps_annual_reports.feather'))
 
-
-# %>%
-#   group_by(cma) %>%
-#   arrange(desc(date)) %>%
-#   mutate(sale_avg_3mo = rollmean(sale_avg, k = 3, fill = NA)) %>%
-#   ungroup() %>%
-#   drop_na()
+source(dir_src("analyze_wps_calls_crime.R"))
+source(dir_src("analyze_winnipeg_salary_disclosure.R"))
