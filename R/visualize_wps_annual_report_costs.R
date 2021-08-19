@@ -5,7 +5,7 @@ p_winnipeg_wps_annual_reports__costs <- ggplot(winnipeg_wps_annual_reports) +
     aes(x = year_date, y = per_capita_cost),
     size = 1,
     colour = wfp_blue,
-    alpha=1
+    alpha=.6
   ) +
   geom_point(data=winnipeg_wps_annual_reports %>% filter(year_date == max(year_date)),
     aes(x = year_date, y = per_capita_cost),

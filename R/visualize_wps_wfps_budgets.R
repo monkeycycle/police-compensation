@@ -36,14 +36,14 @@ p_winnipeg_wps_wfps_annual_budgets <- ggplot(winnipeg_wps_wfps_annual_budgets) +
     }
   ) +
   labs(
-    title = "Annual budget for WPS and WFPS",
+    title = "Annual budget for Winnipeg's police, fire and paramedic services",
     subtitle = "Millions of dollars",
     x="",
     y="",
-    caption=toupper(paste(
-      "WINNIPEG FREE PRESS — SOURCE: City of Winnipeg annual budgets"
-    ))
-
+    caption=
+      toupper(paste(
+        "WINNIPEG FREE PRESS — SOURCE: City of Winnipeg annual budgets"
+      ))
   ) +
   minimal_theme()
 
@@ -52,10 +52,16 @@ p_winnipeg_wps_wfps_annual_budgets <- ggplot(winnipeg_wps_wfps_annual_budgets) +
 # Forecast
 ############################################################
 p_winnipeg_wps_wfps_annual_budgets_forecast <- p_winnipeg_wps_wfps_annual_budgets +
-  annotate("text", x=as.Date("2020-01-01"), y=485, label="Forecast", hjust=-.1 ) +
+  annotate("text", x=as.Date("2020-01-01"), y=485, label="Forecast scenarios", hjust=-.1 ) +
   geom_segment(aes(x = as.Date("2020-01-01"), xend = as.Date("2020-01-01"), y=0, yend = 500), size = .5, lineend = "butt", colour="#c9c9c9") +
   annotate("rect", xmin = as.Date("2020-01-01"), xmax = as.Date("2031-01-01"), ymin = 0, ymax = 500,
                alpha = .3, fill="#c9c9c9") +
+
+  annotate("text", x=as.Date("2022-01-01"), y=155,
+           label=wrap_text("Forecasts provide a range of possibilities, rather than a single certainty, based on analysis of available recent historial data.", 40), hjust=-.1 ) +
+
+
+
 
   geom_line(
     data=df_tbats_wps,

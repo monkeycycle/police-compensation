@@ -21,6 +21,36 @@ winnipeg_budgets_dept_names <- winnipeg_budgets_dept_names %>%
     colnames = winnipeg_budgets_colnames
     )
 
+winnipeg_budgets_yoy_pct_chg <- winnipeg_budgets %>%
+  arrange(year) %>%
+  mutate(
+    adopted_budget_millions_pct_chg = (adopted_budget_millions - lag(adopted_budget_millions)) / lag(adopted_budget_millions) * 100,
+    street_system_solid_waste_collection_land_drainage_street_lighting_and_insect_control_pct_chg = (street_system_solid_waste_collection_land_drainage_street_lighting_and_insect_control - lag(street_system_solid_waste_collection_land_drainage_street_lighting_and_insect_control)) / lag(street_system_solid_waste_collection_land_drainage_street_lighting_and_insect_control) * 100,
+    transit_subsidy_pct_chg = (transit_subsidy - lag(transit_subsidy)) / lag(transit_subsidy) * 100,
+    property_development_planning_permits_and_buildings_pct_chg = (property_development_planning_permits_and_buildings - lag(property_development_planning_permits_and_buildings)) / lag(property_development_planning_permits_and_buildings) * 100,
+    police_and_fire_paramedic_services_pct_chg = (police_and_fire_paramedic_services - lag(police_and_fire_paramedic_services)) / lag(police_and_fire_paramedic_services) * 100,
+    city_clerks_city_council_mayor_s_office_museums_audit_pct_chg = (city_clerks_city_council_mayor_s_office_museums_audit - lag(city_clerks_city_council_mayor_s_office_museums_audit)) / lag(city_clerks_city_council_mayor_s_office_museums_audit) * 100,
+    organizational_support_e_g_information_technology_human_resources_finance_assessment_legal_corporate_pct_chg = (organizational_support_e_g_information_technology_human_resources_finance_assessment_legal_corporate - lag(organizational_support_e_g_information_technology_human_resources_finance_assessment_legal_corporate)) / lag(organizational_support_e_g_information_technology_human_resources_finance_assessment_legal_corporate) * 100,
+    community_services_e_g_libraries_recreation_services_pct_chg = (community_services_e_g_libraries_recreation_services - lag(community_services_e_g_libraries_recreation_services)) / lag(community_services_e_g_libraries_recreation_services) * 100,
+  ) %>%
+  select(
+    year,
+    adopted_budget_millions_pct_chg,
+    street_system_solid_waste_collection_land_drainage_street_lighting_and_insect_control_pct_chg,
+    transit_subsidy_pct_chg,
+    property_development_planning_permits_and_buildings_pct_chg,
+    police_and_fire_paramedic_services_pct_chg,
+    city_clerks_city_council_mayor_s_office_museums_audit_pct_chg,
+    organizational_support_e_g_information_technology_human_resources_finance_assessment_legal_corporate_pct_chg,
+    community_services_e_g_libraries_recreation_services_pct_chg
+  )
+
+winnipeg_budgets_yoy_pct_chg_tall <- winnipeg_budgets_yoy_pct_chg %>%
+  pivot_longer(-year,
+               names_to="dept",
+               values_to="yoy_pct_chg") %>%
+  filter(dept != "adopted_budget_millions_pct_chg") %>%
+  mutate(year = as.Date(year))
 
 
 winnipeg_budgets_pct_chg_10yr_2011 <- winnipeg_budgets %>%
@@ -109,21 +139,6 @@ winnipeg_budgets_pct_chg_10yr_2019 <-  as.data.frame(winnipeg_budgets_pct_chg_10
 winnipeg_budgets_pct_chg_10yr_2020 <-  as.data.frame(winnipeg_budgets_pct_chg_10yr_2020)
 
 
-
-#
-# winnipeg_budgets_pct_chg_10yrs <- left_join(
-#   # winnipeg_budgets_pct_chg_10yr_2011,
-#   # winnipeg_budgets_pct_chg_10yr_2012,
-#   # winnipeg_budgets_pct_chg_10yr_2013,
-#   # winnipeg_budgets_pct_chg_10yr_2014,
-#   # winnipeg_budgets_pct_chg_10yr_2015,
-#   # winnipeg_budgets_pct_chg_10yr_2016,
-#   # winnipeg_budgets_pct_chg_10yr_2017,
-#   # winnipeg_budgets_pct_chg_10yr_2018,
-#   # winnipeg_budgets_pct_chg_10yr_2019,
-#   # winnipeg_budgets_pct_chg_10yr_2020,
-#   by=c("dept"="dept")
-# )
 
 winnipeg_budgets_pct_chg_10yr <- left_join(
   winnipeg_budgets_pct_chg_10yr_2011,
