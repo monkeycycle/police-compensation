@@ -49,7 +49,37 @@ source(dir_src("analyze_winnipeg_budgets.R"))
 
 
 # StatCan crime severity index and clearanc rates
-statcan_crimeseverity_3510002601 <- read_feather(dir_data_processed('statcan_crimeseverity_3510002601.feather'))
+statcan_crimeseverity_3510002601 <- read_feather(dir_data_processed('statcan_crimeseverity_3510002601.feather')) %>%
+  filter(geography %in% c(
+    "Halifax, Nova Scotia",
+    "Montréal, Quebec",
+    "Ottawa-Gatineau, Ontario/Quebec",
+    "Toronto, Ontario",
+    "Hamilton, Ontario",
+    "Regina, Saskatchewan",
+    "Winnipeg, Manitoba",
+    "Saskatoon, Saskatchewan",
+    "Calgary, Alberta",
+    "Edmonton, Alberta",
+    "Kelowna, British Columbia",
+    "Vancouver, British Columbia"
+  )) %>%
+  mutate(
+    geography = case_when(
+         geography == "Halifax, Nova Scotia" ~ "Halifax",
+         geography == "Montréal, Quebec" ~ "Montréal",
+         geography == "Ottawa-Gatineau, Ontario/Quebec" ~ "Ottawa",
+         geography == "Toronto, Ontario" ~ "Toronto",
+         geography == "Hamilton, Ontario" ~ "Hamilton",
+         geography == "Regina, Saskatchewan" ~ "Regina",
+         geography == "Winnipeg, Manitoba" ~ "Winnipeg",
+         geography == "Saskatoon, Saskatchewan" ~ "Saskatoon",
+         geography == "Calgary, Alberta" ~ "Calgary",
+         geography == "Edmonton, Alberta" ~ "Edmonton",
+         geography == "Kelowna, British Columbia" ~ "Kelowna",
+         geography == "Vancouver, British Columbia" ~ "Vancouver"
+    )
+  )
 
 
 statcan_crimeseverityindex <- statcan_crimeseverity_3510002601 %>%
@@ -79,7 +109,12 @@ statcan_crimeseverityindex_tall <- statcan_crimeseverityindex %>%
   ) %>%
   pivot_longer(c(-geography, -reference_period),
                names_to="csi",
-               values_to="value")
+               values_to="value") %>%
+                mutate(
+                  csi = gsub("non_violent_crime_severity_index", "Non-violent CSI", csi, fixed=TRUE),
+                  csi = gsub("violent_crime_severity_index", "Violent CSI", csi, fixed=TRUE),
+                  csi = gsub("crime_severity_index", "Crime Severity Index", csi, fixed=TRUE)
+                )
 
 
 statcan_crimeclearance <- statcan_crimeseverity_3510002601 %>%
@@ -103,4 +138,11 @@ statcan_crimeclearance <- statcan_crimeclearance %>%
 statcan_crimeclearance_tall <- statcan_crimeclearance %>%
   pivot_longer(c(-geography, -reference_period),
                names_to="clearance",
-               values_to="value")
+               values_to="value") %>%
+              mutate(
+                clearance = gsub("weighted_", "", clearance, fixed=TRUE),
+                clearance = gsub("_", " ", clearance, fixed=TRUE),
+                clearance = gsub("non violent clearance rate", "Non-violent", clearance, fixed=TRUE),
+                clearance = gsub("violent clearance rate", "Violent", clearance, fixed=TRUE),
+                clearance = gsub("clearance rate", "Clearance rate", clearance, fixed=TRUE)
+              )

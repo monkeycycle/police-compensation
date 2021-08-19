@@ -16,10 +16,9 @@ p_winnipeg_salary_disclosure <- winnipeg_all_salary_disclosure_2016_2020 %>%
       ifelse(x == 400000, paste("$", comma(x), sep = ""), comma(x))
     }
   ) +
-  minimal_theme() +
   labs(
-    title = wrap_text("Distribution of City of Winnipeg employees with a salary above $75,000", 65),
-    subtitle = "",
+    title = wrap_text("Distribution of City of Winnipeg employees on the salary disclosure list", 65),
+    subtitle = "Salary above $75,000",
     colour="",
     fill="",
     x="",
@@ -27,6 +26,13 @@ p_winnipeg_salary_disclosure <- winnipeg_all_salary_disclosure_2016_2020 %>%
     caption=toupper(paste(
       "WINNIPEG FREE PRESS — SOURCE: City of winnipeg"
     ))
+  ) +
+  minimal_theme() +
+  theme(
+    legend.position=c(.8, 1.05),
+    legend.justification=c("right", "top"),
+    legend.box.just="right",
+    legend.margin=margin(10, 10, 10, 10)
   )
 
 
