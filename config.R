@@ -4,7 +4,7 @@
 # =================================================================
 
 initialize_startr(
-  title = 'Police compensation',
+  title = 'emergency-service-budgets',
   author = 'Michael Pereira <michael.pereira@freepress.mb.ca>',
   timezone = 'America/Winnipeg',
   should_render_notebook = FALSE,
@@ -22,8 +22,8 @@ initialize_startr(
     "ggpubr", "ggtext", "showtext", "kableExtra",
     "gmailr", "patchwork",
     "pracma", "ISOweek",
-    "slackr", "ggbeeswarm"
-
+    "slackr", "ggbeeswarm",
+    "forecast", "fpp2", "TTR"
     # 'rvest',
     # 'sf',
     # 'tidymodels',
