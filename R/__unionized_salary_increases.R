@@ -22,7 +22,7 @@ p_wps_wfps_contract_increases <- ggplot(WFP_WPS_and_WFPS_budgets_contract_increa
   geom_bar(data=WFP_WPS_and_WFPS_budgets_contract_increases,
     aes(x = date, y = total_increase),
     stat="identity", position = position_dodge(width=0.2),
-    fill=wfp_blue
+    fill=nominalMuted_shade_0
     ) +
   geom_line(data=inflation_rate_salary_increases,
             aes(x = date, y = inflation_rate),
