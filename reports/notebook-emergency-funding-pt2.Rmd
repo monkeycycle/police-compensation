@@ -1,0 +1,522 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r config, echo=FALSE, message=FALSE, warning=FALSE, results="hide"}
+# Run config first to use dynamic variables in the YAML
+if (!require("upstartr")) install.packages("upstartr")
+library("upstartr")
+run_config()
+```
+
+---
+title: "`r getOption("startr.title")` -- follows"
+author: "`r getOption("startr.author")`"
+date: "`r format(Sys.Date(), "%B %d, %Y")`"
+output:
+  html_document:
+    self_contained: false
+    code_folding: hide
+    toc: true
+    number_sections: true
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    highlight: textmate
+    theme: cosmo
+    df_print: kable
+---
+
+```{r elt, echo=FALSE, message=FALSE, warning=FALSE, fold_source=TRUE}
+
+source(dir_src("theme.R"))
+source(dir_src("palette.R"))
+source(dir_src("get.R"))
+run_process()
+run_analyze()
+run_visualize()
+```
+
+
+------------------------------------------------------------------------
+
+### WPS and WFPS budgets
+
+The WPS annual budget increased \$101.9 million, or 50.4 per cent, between 2011 and 2020. The WFPS annual budget increased by \$66.4 million, \$46.4 per cent, in the same period.
+
+The percentage of the city's total annual operating budget consumed by the WFPS and WPS has remained relatively consistent in the previous 10 years.
+
+-   Is emergency response driving city budget?
+
+```{r p_winnipeg_wps_wfps_annual_budgets, echo=FALSE, message=FALSE, warning=FALSE }
+plot(wfp_winnipeg_wps_wfps_annual_budgets)
+```
+
+------------------------------------------------------------------------
+
+```{r dt_winnipeg_wps_wfps_annual_budgets, echo=FALSE, message=FALSE, warning=FALSE }
+
+
+datatable(winnipeg_wps_wfps_annual_budgets %>% select(-year_date),
+  caption = "Table: winnipeg_wps_wfps_annual_budgets",
+  class = "cell-border stripe",
+  rownames = FALSE,
+  filter = "top",
+  options = list(
+    pageLength = 20,
+    order = list(list(0, "asc"))
+    # language = list(search = 'Filter:'),
+    # search = list(regex = TRUE, caseInsensitive = FALSE, search = 'Police')
+  )
+)
+
+```
+
+
+### Budget projections
+```{r dt_winnipeg_wps_wfps_budget_forecast, echo=FALSE, message=FALSE, warning=FALSE }
+
+datatable(df_tbats_wps,
+  caption = "Table: df_tbats_wps",
+  class = "cell-border stripe",
+  rownames = FALSE,
+  filter = "top",
+  options = list(
+    pageLength = 20,
+    order = list(list(0, "asc"))
+    # language = list(search = 'Filter:'),
+    # search = list(regex = TRUE, caseInsensitive = FALSE, search = 'Police')
+  )
+)
+
+
+datatable(df_tbats_wfps,
+  caption = "Table: df_tbats_wfps",
+  class = "cell-border stripe",
+  rownames = FALSE,
+  filter = "top",
+  options = list(
+    pageLength = 20,
+    order = list(list(0, "asc"))
+    # language = list(search = 'Filter:'),
+    # search = list(regex = TRUE, caseInsensitive = FALSE, search = 'Police')
+  )
+)
+
+```
+
+
+------------------------------------------------------------------------
+
+### WPS Staffing
+
+The authorized civilian compliment has increased by 160 people or 39.9 per cent, including 25 cadets, between 2011 and 2020 while sworn officers have decreased by 59 or 4.2 per cent.
+
+The number of residents per police officer has increased by 77 residents, a 15.7 per cent increase, in the previous 10 years. The city's population increased by 75,116 people, a 10.9 per cent increase, in the same period.
+
+Per capita costs for WPS increased 36.4 per cent, from \$291.68 to \$397.75 per resident.
+
+```{r p_winnipeg_wps_annual_reports__costs, echo=FALSE, message=FALSE, warning=FALSE }
+plot(wfp_winnipeg_wps_annual_reports__costs)
+```
+
+------------------------------------------------------------------------
+
+```{r dt_winnipeg_wps_annual_reports__staffing, echo=FALSE, message=FALSE, warning=FALSE }
+
+winnipeg_wps_annual_reports %>%
+  select(
+    year,
+    population,
+    tax_supported_expenses,
+    per_capita_cost,
+    total_authorized_police_members,
+    authorized_civilian_compliment_incl_cadets,
+    authorized_cadets,
+    residents_per_police_officer
+  ) %>%
+  datatable(
+    caption = "Table: winnipeg_wps_wfps_annual_budgets -- staffing",
+    class = "cell-border stripe",
+    rownames = FALSE,
+    filter = "top",
+    options = list(
+      pageLength = 20,
+      order = list(list(0, "asc"))
+      # language = list(search = 'Filter:'),
+      # search = list(regex = TRUE, caseInsensitive = FALSE, search = 'Police')
+    )
+  )
+```
+
+
+------------------------------------------------------------------------
+
+### WPS Change
+
+The percentage change for WPS tax-supported expenses outpaced inflation.
+
+```{r p_winnipeg_wps_annual_reports__change, echo=FALSE, message=FALSE, warning=FALSE }
+plot(wfp_winnipeg_wps_annual_reports__change)
+```
+
+------------------------------------------------------------------------
+
+```{r dt_winnipeg_wps_annual_reports__change, echo=FALSE, message=FALSE, warning=FALSE }
+
+winnipeg_wps_annual_reports %>%
+  select(
+    year,
+    tax_supported_expenses_pct_chg,
+    per_capita_cost_pct_chg,
+    residents_per_police_officer_pct_chg,
+    inflation_rate
+  ) %>%
+  datatable(
+    caption = "Table: winnipeg_wps_wfps_annual_budgets -- change ",
+    class = "cell-border stripe",
+    rownames = FALSE,
+    filter = "top",
+    options = list(
+      pageLength = 20,
+      order = list(list(0, "asc"))
+      # language = list(search = 'Filter:'),
+      # search = list(regex = TRUE, caseInsensitive = FALSE, search = 'Police')
+    )
+  )
+```
+
+------------------------------------------------------------------------
+
+### WPS calls and events
+
+Calls to communication centre increased by 2.3 per cent (13,811 more calls) between 2012 and 2020.
+
+Police-initiated dispatched events increased by 69.4 per cent (34,164) in the same period.
+
+Citizen-generated dispatched events increased by 20.7 per cent (27,184)
+
+```{r p_winnipeg_wps_annual_reports__calls_events, echo=FALSE, message=FALSE, warning=FALSE }
+plot(wfp_winnipeg_wps_annual_reports__calls_events)
+```
+
+------------------------------------------------------------------------
+
+```{r dt_winnipeg_wps_annual_reports__calls_events, echo=FALSE, message=FALSE, warning=FALSE }
+
+winnipeg_wps_annual_reports %>%
+  select(
+    year,
+    calls_to_communication_centre,
+    police_initiated_displatched_events,
+    citizen_generated_dispatched_events,
+  ) %>%
+  datatable(
+    caption = "Table: winnipeg_wps_wfps_annual_budgets -- calls_events",
+    class = "cell-border stripe",
+    rownames = FALSE,
+    filter = "top",
+    options = list(
+      pageLength = 20,
+      order = list(list(0, "asc"))
+      # language = list(search = 'Filter:'),
+      # search = list(regex = TRUE, caseInsensitive = FALSE, search = 'Police')
+    )
+  )
+```
+
+------------------------------------------------------------------------
+
+### WPS crime and clearance
+
+```{r p_winnipeg_wps_annual_reports__crime, echo=FALSE, message=FALSE, warning=FALSE }
+plot(wfp_winnipeg_wps_annual_reports__crime)
+```
+
+------------------------------------------------------------------------
+
+```{r dt_winnipeg_wps_annual_reports__crime, echo=FALSE, message=FALSE, warning=FALSE }
+
+winnipeg_wps_annual_reports %>%
+  select(
+    year,
+    violent_crimes_total,
+    property_crimes_total,
+    other_crimes_total,
+    traffic_offences,
+    cdsa_total,
+    ycja_total
+  ) %>%
+  datatable(
+    caption = "Table: winnipeg_wps_wfps_annual_budgets -- crime",
+    class = "cell-border stripe",
+    rownames = FALSE,
+    filter = "top",
+    options = list(
+      pageLength = 20,
+      order = list(list(0, "asc"))
+      # language = list(search = 'Filter:'),
+      # search = list(regex = TRUE, caseInsensitive = FALSE, search = 'Police')
+    )
+  )
+```
+
+------------------------------------------------------------------------
+
+
+### WPS clearance
+
+```{r p_winnipeg_wps_annual_reports__clearance, echo=FALSE, message=FALSE, warning=FALSE }
+plot(wfp_winnipeg_wps_annual_reports__clearance)
+```
+
+------------------------------------------------------------------------
+
+```{r dt_winnipeg_wps_annual_reports__clearance, echo=FALSE, message=FALSE, warning=FALSE }
+
+winnipeg_wps_annual_reports %>%
+  select(
+    year,
+    violent_crimes_clearance_rate_pct,
+    property_crimes_clearance_rate_pct,
+    other_crimes_clearance_rate_pct,
+    cdsa_clearance_rate_pct,
+  ) %>%
+  datatable(
+    caption = "Table: winnipeg_wps_wfps_annual_budgets -- clearance",
+    class = "cell-border stripe",
+    rownames = FALSE,
+    filter = "top",
+    options = list(
+      pageLength = 20,
+      order = list(list(0, "asc"))
+      # language = list(search = 'Filter:'),
+      # search = list(regex = TRUE, caseInsensitive = FALSE, search = 'Police')
+    )
+  )
+```
+
+## Salary disclosure
+
+-   **What percentage of WPS and WFPS staff are on the salary disclosure list?**
+
+```{r p_winnipeg_salary_disclosure, echo=FALSE, message=FALSE, warning=FALSE }
+
+
+plot(wfp_winnipeg_salary_disclosure)
+```
+
+------------------------------------------------------------------------
+
+#### winnipeg_all_salary_disclosure_2016_2020_grouped_ranked
+
+```{r dt_winnipeg_all_salary_disclosure_2016_2020_grouped_ranked, echo=TRUE, message=TRUE, warning=TRUE }
+
+datatable(winnipeg_all_salary_disclosure_2016_2020_grouped_ranked,
+  caption = "Table: winnipeg_all_salary_disclosure_2016_2020_grouped_ranked",
+  class = "cell-border stripe",
+  rownames = FALSE,
+  filter = "top",
+  options = list(
+    pageLength = 10,
+    order = list(list(3, "asc"), list(1, "asc")),
+    language = list(search = "Filter:")
+  )
+)
+```
+
+------------------------------------------------------------------------
+
+#### winnipeg_all_salary_disclosure_2016_2020_grouped
+
+```{r dt_winnipeg_all_salary_disclosure_2016_2020_grouped, echo=TRUE, message=TRUE, warning=TRUE }
+
+datatable(winnipeg_all_salary_disclosure_2016_2020_grouped,
+  caption = "Table: winnipeg_all_salary_disclosure_2016_2020_grouped",
+  class = "cell-border stripe",
+  rownames = FALSE,
+  filter = "top",
+  options = list(
+    pageLength = 10,
+    order = list(list(1, "desc")),
+    language = list(search = "Filter:"),
+    search = list(regex = TRUE, caseInsensitive = FALSE, search = "Police")
+  )
+)
+```
+
+------------------------------------------------------------------------
+
+#### winnipeg_police_salary_disclosure_2016_2020
+
+Winnipeg Police Service staff are named but officers (Constables, etc.) are not.
+
+```{r dt_winnipeg_all_salary_disclosure_2016_2020, echo=TRUE, message=TRUE, warning=TRUE }
+
+datatable(winnipeg_all_salary_disclosure_2016_2020,
+  caption = "Table: winnipeg_all_salary_disclosure_2016_2020",
+  class = "cell-border stripe",
+  rownames = FALSE,
+  filter = "top",
+  options = list(
+    pageLength = 25,
+    order = list(list(5, "asc"))
+  )
+)
+```
+
+------------------------------------------------------------------------
+
+```{r portion_wps_salary_disclosure, echo=FALSE, message=FALSE, warning=FALSE }
+
+wps_headcount_disclosure = winnipeg_wps_annual_reports %>%
+  select(
+    year,
+    total_authorized_police_members,
+    authorized_civilian_compliment_incl_cadets
+  ) %>%
+  mutate(
+   total_headcount =  total_authorized_police_members + authorized_civilian_compliment_incl_cadets
+  ) %>%
+  left_join(
+    winnipeg_all_salary_disclosure_2016_2020_grouped %>%
+      filter(department == "Police Services") %>%
+      select(year, count),
+      by=c("year" = "year")
+  ) %>%
+  rename(
+    salary_disclosure_headcount = count
+  ) %>%
+  mutate(
+    salary_disclosure_pct = salary_disclosure_headcount / total_headcount * 100
+  ) %>%
+  select(
+    year,
+    salary_disclosure_pct,
+    total_headcount,
+    salary_disclosure_headcount,
+    total_authorized_police_members,
+    authorized_civilian_compliment_incl_cadets
+
+
+  )
+
+
+datatable(wps_headcount_disclosure,
+  caption = "Table: wps_headcount_disclosure",
+  class = "cell-border stripe",
+  rownames = FALSE,
+  filter = "top",
+  options = list(
+    pageLength = 25,
+    order = list(list(5, "asc"))
+  )
+)
+
+```
+
+------------------------------------------------------------------------
+
+## Winnipeg Budgets
+
+```{r p_winnipeg_budgets, echo=FALSE, message=FALSE, warning=FALSE }
+
+# plot(wfp_winnipeg_budget_depts)
+
+```
+
+```{r dt_winnipeg_budgets, echo=FALSE, message=FALSE, warning=FALSE }
+
+datatable(winnipeg_budgets,
+  caption = "Table: winnipeg_budgets",
+  class = "cell-border stripe",
+  rownames = FALSE,
+  filter = "top",
+  options = list(
+    pageLength = 25,
+    order = list(list(5, "asc"))
+  )
+)
+
+```
+
+------------------------------------------------------------------------
+
+### 10 year percentage change for Winnipwg departments
+
+```{r p_winnipeg_budgets_pct_chg_10yr, echo=FALSE, message=FALSE, warning=FALSE }
+plot(wfp_winnipeg_budgets_pct_chg_10yr)
+```
+
+```{r dt_winnipeg_budgets_pct_chg_10yr, echo=FALSE, message=FALSE, warning=FALSE }
+
+datatable(winnipeg_budgets_pct_chg_10yr,
+  caption = "Table: winnipeg_budgets_pct_chg_10yr",
+  class = "cell-border stripe",
+  rownames = FALSE,
+  filter = "top",
+  options = list(
+    pageLength = 25,
+    order = list(list(3, "desc"))
+  )
+)
+
+```
+
+
+------------------------------------------------------------------------
+
+
+### Crime Severity Index and Clearance Rates
+
+```{r p_statcan_crime_severity_index, echo=FALSE, message=FALSE, warning=FALSE }
+plot(wfp_statcan_crime_severity_index)
+```
+
+
+
+```{r dt_statcan_crimeseverityindex, echo=FALSE, message=FALSE, warning=FALSE }
+
+datatable(statcan_crimeseverityindex,
+  caption = "Table: statcan_crimeseverityindex",
+  class = "cell-border stripe",
+  rownames = FALSE,
+  filter = "top",
+  options = list(
+    pageLength = 25,
+    order = list(list(1, "asc"))
+  )
+)
+
+```
+
+------------------------------------------------------------------------
+
+
+### Clearance Rates
+
+```{r p_statcan_crime_clearance, echo=FALSE, message=FALSE, warning=FALSE }
+plot(wfp_statcan_crime_clearance)
+```
+
+```{r dt_statcan_crimeclearance, echo=FALSE, message=FALSE, warning=FALSE }
+
+datatable(statcan_crimeclearance,
+  caption = "Table: statcan_crimeclearance",
+  class = "cell-border stripe",
+  rownames = FALSE,
+  filter = "top",
+  options = list(
+    pageLength = 25,
+    order = list(list(1, "asc"))
+  )
+)
+
+```
+
+
+
+
+

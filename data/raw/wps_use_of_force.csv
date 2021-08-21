@@ -1,0 +1,7 @@
+year,dispatched_calls_for_service,use_of_force_reports,soft_empty_hand_control,hard_empty_hand_control,intermediate_weapons,deadly_force_presented_or_deployed,oc_spray,asp_baton,conducted_energy_weapon_presented_coerce,conducted_energy_weapon_probes_deployed,conducted_energy_weapon_push_stun,canine_presented_coerce,canine_bite
+2015,201175,947,0.7756,33.44,0.2585,0.2521,2,16,108,54,21,49,13
+2016,205641,858,0.8047,39.42,0.2924,0.2187,2,16,103,69,30,42,19
+2017,225129,872,0.7875,42.03,0.2945,0.2309,5,19,97,83,31,39,19
+2018,225204,757,0.7688,44.52,0.3329,0.2034,17,19,96,89,20,20,7
+2019,231668,857,0.7445,40.96,0.3512,0.1925,8,10,94,154,26,22,9
+2020,241795,742,0.7682,0.4084,0.3571,0.1833,8,12,94,124,25,,11

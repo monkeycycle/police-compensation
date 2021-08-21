@@ -20,3 +20,7 @@ GET("https://docs.google.com/spreadsheets/d/e/2PACX-1vS8iqlqYvFhH-l3lM_FnVb2cqYz
 GET("https://docs.google.com/spreadsheets/d/e/2PACX-1vS8iqlqYvFhH-l3lM_FnVb2cqYz3Bw6emNJf45SJHKMxX6ZOmTlPWOuf3bfv3vhUUkaujR2yNYilu3c/pub?gid=1834239744&single=true&output=csv",
     write_disk(dir_data_raw("inflation_canada.csv"), overwrite=TRUE))
 
+
+# WPS Use of force
+GET("https://docs.google.com/spreadsheets/d/e/2PACX-1vS8iqlqYvFhH-l3lM_FnVb2cqYz3Bw6emNJf45SJHKMxX6ZOmTlPWOuf3bfv3vhUUkaujR2yNYilu3c/pub?gid=2145295186&single=true&output=csv",
+    write_disk(dir_data_raw("wps_use_of_force.csv"), overwrite=TRUE))
