@@ -2,6 +2,8 @@
 inflation_rate <- read_feather(dir_data_processed('inflation_rate.feather'))
 winnipeg_wps_annual_reports <- read_feather(dir_data_processed('wps_annual_reports.feather'))
 winnipeg_wps_wfps_annual_budgets <- read_feather(dir_data_processed('wfps_wps_annual_budgets.feather'))
+wps_use_of_force <- read_feather(dir_data_processed('wps_use_of_force.feather'))
+
 
 ################################################################################
 # Forecast the WPS and WFPS budgets.
