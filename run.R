@@ -7,6 +7,7 @@ source(dir_src("get.R"))
 run_process()
 run_analyze()
 run_visualize()
+source(dir_src("__use_of_force.R"))
 
 
 run_notebook(filename="notebook-emergency-service-budgets.Rmd")

@@ -8,7 +8,7 @@ inflation_rate_raw <- read_csv(dir_data_raw("inflation_canada.csv")) %>%
 write_feather(inflation_rate_raw, dir_data_processed('inflation_rate.feather'))
 
 source(dir_src("process_wps_annual_reports.R"))
-source(dir_src("process_winnipeg_salary_disclosures.R"))
+# source(dir_src("process_winnipeg_salary_disclosures.R"))
 source(dir_src("process_winnipeg_budgets.R"))
 
 

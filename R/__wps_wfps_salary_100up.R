@@ -25,7 +25,7 @@ wps_wfps_salary_disclosure_all_less100 <- df_winnipeg_salary_disclosure %>%
   )
 
 wps_wfps_salary_disclosure_all_100_150 <- df_winnipeg_salary_disclosure %>%
-  filter(compensation >= 100000 & compensation <= 150000 ) %>%
+  filter(compensation >= 100000 & compensation < 150000 ) %>%
   filter(
     department %in% c("Police Services", "Fire Paramedic Service")
   ) %>%
@@ -37,7 +37,7 @@ wps_wfps_salary_disclosure_all_100_150 <- df_winnipeg_salary_disclosure %>%
   )
 
 
-wps_wfps_salary_disclosure_all_150_200 <- df_winnipeg_salary_disclosure %>%
+wps_wfps_salary_disclosure_all_150_plus <- df_winnipeg_salary_disclosure %>%
   filter(compensation >= 150000) %>%
   filter(
     department %in% c("Police Services", "Fire Paramedic Service")
@@ -46,7 +46,7 @@ wps_wfps_salary_disclosure_all_150_200 <- df_winnipeg_salary_disclosure %>%
   tally() %>%
   ungroup() %>%
   rename(
-    subset_150_200K = n
+    subset_150plus = n
   )
 
 
@@ -79,9 +79,9 @@ wps_wfps_salary_disclosure_all_200plus <- df_winnipeg_salary_disclosure %>%
 
 
 
-wps_wfps_sixfigure <- left_join(
+wps_wfps_sixfigure_wide <- left_join(
   wps_wfps_salary_disclosure_all_100_150,
-  wps_wfps_salary_disclosure_all_150_200,
+  wps_wfps_salary_disclosure_all_150_plus,
   by=c("department"="department", "year"="year")
 ) %>%
 # left_join(
@@ -91,7 +91,9 @@ wps_wfps_sixfigure <- left_join(
 left_join(
   wps_wfps_salary_disclosure_all_less100,
   by=c("department"="department", "year"="year")
-) %>%
+)
+
+wps_wfps_sixfigure <- wps_wfps_sixfigure_wide %>%
   pivot_longer(
     c(-year, -department),
     names_to="salary_group",
@@ -108,6 +110,13 @@ left_join(
                           levels=c("$200K or more", "$150-200K", "$100-150K", "Less than $100K")
     )
   )
+
+wps_wfps_sixfigure_wide <- left_join(
+  wps_wfps_sixfigure_wide,
+  wps_wfps_salary_disclosure_all,
+  by=c("department"="department", "year"="year")
+)
+
 
 
 df_annotations <- data.frame(

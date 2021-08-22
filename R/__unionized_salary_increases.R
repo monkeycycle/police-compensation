@@ -1,5 +1,5 @@
-library(readr)
-WFP_WPS_and_WFPS_budgets_contract_increases <- read_csv("data/raw/WFP -WPS and WFPS budgets - contract increases.csv") %>%
+
+WFP_WPS_and_WFPS_budgets_contract_increases <- read_csv(dir_data_raw("WFP -WPS and WFPS budgets - contract increases.csv")) %>%
   pivot_longer(-date,
                names_to = "union",
                values_to = "increase") %>%

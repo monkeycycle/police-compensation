@@ -11,6 +11,12 @@ source(dir_src("visualize_wps_annual_report_clearance.R"))
 source(dir_src("visualize_wps_annual_report_crime.R"))
 
 
+source(dir_src("__wps_wfps_salary_100up.R"))
+source(dir_src("__unionized_salary_increases.R"))
+source(dir_src("__visualize_wps_annual_report_clearance_facet.R"))
+source(dir_src("__visualize_wps_annual_report_crime_facet.R"))
+source(dir_src("__visualize_staffing.R"))
+source(dir_src("__visualize_officer_diversity.R"))
 
 source(dir_src("visualize_wps_annual_report_change.R"))
 

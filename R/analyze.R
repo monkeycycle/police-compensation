@@ -5,6 +5,12 @@ winnipeg_wps_wfps_annual_budgets <- read_feather(dir_data_processed('wfps_wps_an
 wps_use_of_force <- read_feather(dir_data_processed('wps_use_of_force.feather'))
 
 
+source(dir_src("analyze_winnipeg_officer_diversity.R"))
+source(dir_src("analyze_wps_calls_crime.R"))
+source(dir_src("analyze_winnipeg_salary_disclosure.R"))
+source(dir_src("analyze_winnipeg_budgets.R"))
+
+
 ################################################################################
 # Forecast the WPS and WFPS budgets.
 ################################################################################
@@ -42,11 +48,6 @@ df_tbats_wfps <- df_tbats_wfps %>%
   mutate(year_date = as.Date(paste(year, "-01-01", sep=""))) %>%
   clean_names() %>%
   add_row(year="2020", point_forecast=wfps_2020_value, lo_80=wfps_2020_value, hi_80=wfps_2020_value, lo_95=wfps_2020_value, hi_95=wfps_2020_value, year_date=as.Date("2020-01-01"))
-
-
-source(dir_src("analyze_wps_calls_crime.R"))
-source(dir_src("analyze_winnipeg_salary_disclosure.R"))
-source(dir_src("analyze_winnipeg_budgets.R"))
 
 
 
